@@ -98,5 +98,9 @@
     padding: 0 5px !important;
   }
 
+  .search-table-data {
+    height: 450px !important;
+  }
+
 
 }
