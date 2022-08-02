@@ -20,6 +20,7 @@ export default function ComponentSearch() {
   const [data, setData] = useState([]);
   const [noData, setNoData] = useState(true);
   const [err, setErr] = useState(false);
+  const [err1, setErr1] = useState(false);
 
   const dataGeted = useSelector((state) => {
     return state.GetDataPointReducer.data;
@@ -47,16 +48,22 @@ export default function ComponentSearch() {
       setErr(true);
       setHideTable(false);
     } else {
-      const arr1 = dataGeted.filter((data) => {
-        return valueInput == data.entry_normalize_score ? true : false;
-      });
+      if (valueInput > 40) {
+        setErr1(true);
+      } else {
+        const arr1 = dataGeted.filter((data) => {
+          return Number(valueInput) >= data.entry_normalize_score
+            ? true
+            : false;
+        });
 
-      if (arr1.length > 0) {
-        setNoData(false);
+        if (arr1.length > 0) {
+          setNoData(false);
+        }
+        setData(arr1);
+        setHideTable(true);
+        setErr(false);
       }
-      setData(arr1);
-      setHideTable(true);
-      setErr(false);
     }
   };
 
@@ -98,7 +105,6 @@ export default function ComponentSearch() {
                   <p style={{ marginTop: "35px" }}>
                     Chú ý: dấu (*) là bắt buộc nhập
                   </p>
-
                   <div
                     style={{
                       textAlign: "center",
@@ -153,6 +159,18 @@ export default function ComponentSearch() {
                       (* Không được bỏ trống ! )
                     </p>
                   ) : null}
+                  {err1 ? (
+                    <p
+                      style={{
+                        marginTop: "10px",
+                        fontSize: "12px",
+                        color: "red",
+                      }}
+                    >
+                      (* Vui lòng nhập đúng điểm của mình ! )
+                    </p>
+                  ) : null}
+
                   <div style={{ marginTop: "20px" }}>
                     <button
                       type="button"
